@@ -1,6 +1,6 @@
 {
   "name": "@propeller/std",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "The propeller standard library for nodejs",
   "main": "index.js",
   "scripts": {
@@ -10,7 +10,10 @@
   "publishConfig": {
     "access": "private"
   },
-  "files": [ "./index.js", "./src/*.js" ],
+  "files": [
+    "./index.js",
+    "./src/*.js"
+  ],
   "repository": {
     "type": "git",
     "url": "git@gitlab.propeller.de:propeller/inhouse/nodejs/std.git"
