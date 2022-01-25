@@ -4,7 +4,7 @@
   "description": "The propeller standard library for nodejs",
   "main": "index.js",
   "scripts": {
-    "test": "node ./test/test.js"
+    "test": "node ./test/test.js",
     "semantic-release": "semantic-release"
   },
   "publishConfig": {
