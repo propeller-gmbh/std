@@ -1,10 +1,10 @@
 {
   "name": "std",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "The propeller standard library for nodejs",
   "main": "index.js",
   "scripts": {
-    "test": "node ./test/test.js"
+    "test": "node ./tests/test.js"
   },
   "repository": {
     "type": "git",
@@ -12,7 +12,5 @@
   },
   "author": "Michael Ochmann <michael.ochmann@propeller.de>",
   "license": "UNLICENSED",
-  "dependencies": {
-    "chalk": "^4.1.2"
-  }
+  "dependencies": {}
 }
