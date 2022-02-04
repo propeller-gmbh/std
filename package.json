@@ -12,5 +12,8 @@
   },
   "author": "Michael Ochmann <michael.ochmann@propeller.de>",
   "license": "UNLICENSED",
-  "dependencies": {}
+  "dependencies": {},
+  "devDependencies": {
+    "semantic-release": "^19.0.2"
+  }
 }
