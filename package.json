@@ -1,19 +1,26 @@
 {
-  "name": "std",
-  "version": "0.0.2",
-  "description": "The propeller standard library for nodejs",
-  "main": "index.js",
-  "scripts": {
-    "test": "node ./tests/test.js"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git@gitlab.propeller.de:propeller/inhouse/nodejs/std.git"
-  },
-  "author": "Michael Ochmann <michael.ochmann@propeller.de>",
-  "license": "UNLICENSED",
-  "dependencies": {},
-  "devDependencies": {
-    "semantic-release": "^19.0.2"
-  }
+	"name": "@propeller/std",
+	"version": "1.1.4",
+	"description": "The propeller standard library for nodejs",
+	"main": "index.js",
+	"scripts": {
+		"test": "node ./tests/test.js",
+		"semantic-release": "semantic-release"
+	},
+	"publishConfig": {
+		"access": "private"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git@gitlab.propeller.de:propeller/inhouse/nodejs/std.git"
+	},
+	"author": "Michael Ochmann <michael.ochmann@propeller.de>",
+	"license": "UNLICENSED",
+	"dependencies": {},
+	"devDependencies": {
+		"@semantic-release/git": "^10.0.1",
+		"@semantic-release/gitlab": "^7.0.4",
+		"@semantic-release/npm": "^9.0.0",
+		"semantic-release": "^19.0.2"
+	}
 }
