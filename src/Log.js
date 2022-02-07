@@ -156,7 +156,8 @@ const log = (string, ...args) => {
 		}
 		output = string.toString().replace(_paramRegex, _ => values.shift().toString()).replace(_escapeRegex, "%");
 	}
-	logDirect(`[${caller(1)}] ${output.toString()}`, string instanceof LogObject ? string.prefix : "");
+	const val = typeof output === "undefined" ? "undefined" : output.toString();
+	logDirect(`[${caller(1)}] ${val}`, string instanceof LogObject ? string.prefix : "");
 
 	if (string instanceof LogObject && string.fatal)
 		process.exit(1); // we exit hard when log level is fatal
