@@ -39,12 +39,13 @@ const _formatObject = obj => {
 	let output = JSON.stringify(obj, null , 4);
 
 	return output
-			.replace(/([{\[\]}])/mgi, `${COLOR(_color.green)}$1${COLOR(_color.none)}`)                         // brackets and braces
-			.replace(/"(.*)"\s*:/mgi, `${COLOR(_color.blackBright)}$1${COLOR(_color.none)} :`)                 // keys
-			.replace(/(:?)(\s+)([0-9]+\.[0-9]+)/mgi, `$1$2${COLOR(_color.blueBright)}$3${COLOR(_color.none)}`) // floating points
-			.replace(/\:\s*([0-9]+)\s*,/mgi, `: ${COLOR(_color.cyanBright)}$1${COLOR(_color.none)},`)          // integers
-			.replace(/(\s+)([0-9]+)(\s*)(,?)/mgi, `$1${COLOR(_color.cyanBright)}$2${COLOR(_color.none)}$3$4`)  // integers in arrays
-			.replace(/:\s*(".*")/mgi, `: ${COLOR(_color.yellowBright)}$1${COLOR(_color.none)}`);               // strings
+			.replace(/([{\[\]}])/mgi, `${COLOR(_color.green)}$1${COLOR(_color.none)}`)                                 // brackets and braces
+			.replace(/"(.*)"\s*:/mgi, `${COLOR(_color.blackBright)}$1${COLOR(_color.none)} :`)                         // keys
+			.replace(/(:?)(\s+)(?<!".*)([0-9]+\.[0-9]+)/mgi, `$1$2${COLOR(_color.blueBright)}$3${COLOR(_color.none)}`) // floating points
+			.replace(/(:?)(\s+)(?<!".*)([0-9]+)(,?)/gmi, `$1$2${COLOR(_color.cyan)}$3${COLOR(_color.none)}$4`)         // integers
+			.replace(/:\s*(".*")/mgi, `: ${COLOR(_color.yellowBright)}$1${COLOR(_color.none)}`)                        // strings
+			.replace(/:\s*(?<!"\s*)(true|false)/gmi, `: ${COLOR(_color.green)}$1${COLOR(_color.none)}`)                // true/false
+			.replace(/(?<!".*)null/gmi, `${COLOR(_color.magenta)}null${COLOR(_color.none)}`);                          // null/undefined
 }
 
 /*
@@ -135,6 +136,7 @@ const logDirect = (string, prefix = "") => {
  * 
  * @author Michael Ochmann <michael.ochmann@propeller.de>
  */
+//@Todo : Bug: handle `undefined` arguments
 const log = (string, ...args) => {
 	if (!isDevelopment() && (!(string instanceof LogObject) || !string.fatal))
 		return; // we return when log level is not fatal and we are in production mode

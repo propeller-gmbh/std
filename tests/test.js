@@ -14,6 +14,22 @@ const LogTest = () => {
 			return lol;
 		}
 	};
+	const baz = {
+		integer  : 50,
+		float    : 3.14159652,
+		string   : "this is just a test",
+		stringNo : "this is a string with a number 566 and a float 55.55",
+		array    : [
+			1, 2, 3
+		],
+		obj      : {
+			foo : "A",
+			bar : true,
+			baz : false,
+			nil : null,
+			nol : "a null value"
+		}
+	};
 	const myArray = [1, 3, 4];
 
 	log("this is a normal string");
@@ -21,6 +37,7 @@ const LogTest = () => {
 	log("this string contains % as an object", bar);
 	log("this string contains % as an array", myArray);
 	log(level.WARN`this template literal contains % as an object`, bar);
+	log("this: % is another object.", baz);
 	log(level.INFO`this is just informational because foo (${foo}) is %`, foo);
 	log(level.WARN`in this literal, this '%' gets replaced with the number five and this not '\\%'`, 5);
 	log(level.SUCCESS`success!`);
