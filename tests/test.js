@@ -14,10 +14,12 @@ const LogTest = () => {
 			return lol;
 		}
 	};
+	const myArray = [1, 3, 4];
 
 	log("this is a normal string");
 	log("in this string, this '%' gets replaced with the number five and this not '\\%'", 5);
 	log("this string contains % as an object", bar);
+	log("this string contains % as an array", myArray);
 	log(level.WARN`this template literal contains % as an object`, bar);
 	log(level.INFO`this is just informational because foo (${foo}) is %`, foo);
 	log(level.WARN`in this literal, this '%' gets replaced with the number five and this not '\\%'`, 5);
