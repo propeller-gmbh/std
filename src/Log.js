@@ -9,7 +9,6 @@ const _color       = Object.freeze({ // these are magic numbers for ANSI escape 
 	none          : 0,
 	red           : 31,
 	black         : 30,
-	red           : 31,
 	green         : 32,
 	yellow        : 33,
 	blue          : 34,
@@ -25,6 +24,28 @@ const _color       = Object.freeze({ // these are magic numbers for ANSI escape 
 	cyanBright    : 96,
 	whiteBright   : 97
 });
+
+/**
+ * Wraps a color code into an ANSI escap sequence
+ * 
+ * @param {int} color 
+ * @returns {String} ANSI escape sequence
+ */
+const COLOR = color => {
+	return `\u001B[${color}m`;
+};
+
+const _formatObject = obj => {
+	let output = JSON.stringify(obj, null , 4);
+
+	return output
+			.replace(/([{\[\]}])/mgi, `${COLOR(_color.green)}$1${COLOR(_color.none)}`)                         // brackets and braces
+			.replace(/"(.*)"\s*:/mgi, `${COLOR(_color.blackBright)}$1${COLOR(_color.none)} :`)                 // keys
+			.replace(/(:?)(\s+)([0-9]+\.[0-9]+)/mgi, `$1$2${COLOR(_color.blueBright)}$3${COLOR(_color.none)}`) // floating points
+			.replace(/\:\s*([0-9]+)\s*,/mgi, `: ${COLOR(_color.cyanBright)}$1${COLOR(_color.none)},`)          // integers
+			.replace(/(\s+)([0-9]+)(\s*)(,?)/mgi, `$1${COLOR(_color.cyanBright)}$2${COLOR(_color.none)}$3$4`)  // integers in arrays
+			.replace(/:\s*(".*")/mgi, `: ${COLOR(_color.yellowBright)}$1${COLOR(_color.none)}`);               // strings
+}
 
 /*
  * this magic is nessecary, because reflcetion of `callee.caller` is not availbale in strict mode
@@ -53,7 +74,7 @@ class LogObject {
 		this.fatal   = fatal;
 		this.strings = strings;
 		this.values  = values;
-		this.prefix  = `\u001B[${color}m`;
+		this.prefix  = COLOR(color);
 	}
 
 	/**
@@ -70,7 +91,7 @@ class LogObject {
 				output += this.values[i].toString();
 			i++;
 		}
-		output += "\u001B[0m";
+		output += COLOR(_color.none);
 
 		return output;
 	}
@@ -124,7 +145,14 @@ const log = (string, ...args) => {
 	if (args.length > 0 || count > 0) {
 		if (count !== args.length)
 			throw new RangeError(`log string argument mismatch, required ${count} got ${args.length}.`); // we throw an error when argument count does not match
-		output = string.toString().replace(_paramRegex, _ => args.shift().toString()).replace(_escapeRegex, "%");
+		const values = [];
+		for (const arg of args) {
+			if (typeof arg === "object")
+				values.push(_formatObject(arg) + (string instanceof LogObject ? string.prefix : COLOR(_color.none)));
+			else
+				values.push(arg);
+		}
+		output = string.toString().replace(_paramRegex, _ => values.shift().toString()).replace(_escapeRegex, "%");
 	}
 	logDirect(`[${caller(1)}] ${output.toString()}`, string instanceof LogObject ? string.prefix : "");
 
