@@ -36,6 +36,7 @@ const LogTest = () => {
 	log("in this string, this '%' gets replaced with the number five and this not '\\%'", 5);
 	log("this string contains % as an object", bar);
 	log("this string contains % as an array", myArray);
+	log("this is a null (%) string, and this an undefined one (%)", null, undefined);
 	log(level.WARN`this template literal contains % as an object`, bar);
 	log("this: % is another object.", baz);
 	log(level.INFO`this is just informational because foo (${foo}) is %`, foo);
