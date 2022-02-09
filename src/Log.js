@@ -114,6 +114,9 @@ const level = Object.freeze({
  * @param {String} prefix 
  */
 const logDirect = (string, prefix = "") => {
+	if (!string)
+		return;
+
 	const date = new Date();
 	_log(`${prefix}${date.toDateString()} ${date.toLocaleTimeString()}\t${string.toString()}`);
 };
@@ -138,6 +141,8 @@ const logDirect = (string, prefix = "") => {
  */
 //@Todo : Bug: handle `undefined` arguments
 const log = (string, ...args) => {
+	if (!string)
+		return;
 	if (!isDevelopment() && (!(string instanceof LogObject) || !string.fatal))
 		return; // we return when log level is not fatal and we are in production mode
 	
@@ -151,12 +156,16 @@ const log = (string, ...args) => {
 		for (const arg of args) {
 			if (typeof arg === "object")
 				values.push(_formatObject(arg) + (string instanceof LogObject ? string.prefix : COLOR(_color.none)));
+			else if (typeof arg === "undefined")
+				values.push("undefined");
+			else if (arg === null)
+				values.push("null");
 			else
 				values.push(arg);
 		}
 		output = string.toString().replace(_paramRegex, _ => values.shift().toString()).replace(_escapeRegex, "%");
 	}
-	const val = typeof output === "undefined" ? "undefined" : output.toString();
+	const val = typeof output === "undefined" ? "undefined" : (output === null ? "null" : output.toString());
 	logDirect(`[${caller(1)}] ${val}`, string instanceof LogObject ? string.prefix : "");
 
 	if (string instanceof LogObject && string.fatal)
