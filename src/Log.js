@@ -191,6 +191,7 @@ const assert = (assertion, string, ...args) => {
 		}, "");
 		_log(paths);
 		_log(`${COLOR(_color.red)}\tASSERTION FAILED: ${sprintf(string, args)}${COLOR(_color.none)}`);
+		process.exit(100);
 	}
 }
 
