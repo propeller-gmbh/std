@@ -1,4 +1,4 @@
-const {log, level} = require("../index");
+const {log, level, assert} = require("../index");
 
 
 const LogTest = () => {
@@ -45,4 +45,11 @@ const LogTest = () => {
 	log(level.ERROR`ERROR -> this is an error`);
 };
 
+const AssertionTest = () => {
+	const value = 10;
+
+	assert(value === 5, `expected value to be 5, actually is '%'`, value);
+}
+
 LogTest();
+AssertionTest();

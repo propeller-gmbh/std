@@ -1,6 +1,6 @@
 "use strict";
 
-const {isDevelopment} = require("./Environment");
+const {isDevelopment, here} = require("./Environment");
 
 const _log         = console["log"] || (() => {});
 const _paramRegex  = /(?<!\\)(%)/mg;
@@ -121,6 +121,30 @@ const logDirect = (string, prefix = "") => {
 	_log(`${prefix}${date.toDateString()} ${date.toLocaleTimeString()}\t${string.toString()}`);
 };
 
+const sprintf = (string, args) => {
+	let output = string;
+
+	const count = ((string.toString() || "").match(_paramRegex) || []).length || 0;
+	if (args.length > 0 || count > 0) {
+		if (count !== args.length)
+			throw new RangeError(`log string argument mismatch, required ${count} got ${args.length}.`); // we throw an error when argument count does not match
+		const values = [];
+		for (const arg of args) {
+			if (typeof arg === "object")
+				values.push(_formatObject(arg) + (string instanceof LogObject ? string.prefix : COLOR(_color.none)));
+			else if (typeof arg === "undefined")
+				values.push("undefined");
+			else if (arg === null)
+				values.push("null");
+			else
+				values.push(arg);
+		}
+		output = string.toString().replace(_paramRegex, _ => values.shift().toString()).replace(_escapeRegex, "%");
+	}
+
+	return output;
+};
+
 /**
  * Standard log function
  * 
@@ -146,35 +170,34 @@ const log = (string, ...args) => {
 	if (!isDevelopment() && (!(string instanceof LogObject) || !string.fatal))
 		return; // we return when log level is not fatal and we are in production mode
 	
-	let output = string;
-
-	const count = ((string.toString() || "").match(_paramRegex) || []).length || 0;
-	if (args.length > 0 || count > 0) {
-		if (count !== args.length)
-			throw new RangeError(`log string argument mismatch, required ${count} got ${args.length}.`); // we throw an error when argument count does not match
-		const values = [];
-		for (const arg of args) {
-			if (typeof arg === "object")
-				values.push(_formatObject(arg) + (string instanceof LogObject ? string.prefix : COLOR(_color.none)));
-			else if (typeof arg === "undefined")
-				values.push("undefined");
-			else if (arg === null)
-				values.push("null");
-			else
-				values.push(arg);
-		}
-		output = string.toString().replace(_paramRegex, _ => values.shift().toString()).replace(_escapeRegex, "%");
-	}
-	const val = typeof output === "undefined" ? "undefined" : (output === null ? "null" : output.toString());
+	const output = sprintf(string, args);
+	const val    = typeof output === "undefined" ? "undefined" : (output === null ? "null" : output.toString());
 	logDirect(`[${caller(1)}] ${val}`, string instanceof LogObject ? string.prefix : "");
 
 	if (string instanceof LogObject && string.fatal)
 		process.exit(1); // we exit hard when log level is fatal
 };
 
+const assert = (assertion, string, ...args) => {
+	if (!isDevelopment())
+		return;
+	
+
+	if (assertion !== true) {
+		const paths = here().split('/').reduce((accumulator, current, index, array) => {
+			const divider = accumulator === "" ? "" : "/";
+			const color   = index === array.length -1 ? COLOR(_color.yellowBright) : "";
+			return `${accumulator}${divider}${color}${current}`;
+		}, "");
+		_log(paths);
+		_log(`${COLOR(_color.red)}\tASSERTION FAILED: ${sprintf(string, args)}${COLOR(_color.none)}`);
+	}
+}
+
 module.exports = {
 	log,
 	logDirect,
 	level,
-	caller
+	caller,
+	assert
 };
