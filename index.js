@@ -5,10 +5,11 @@
  */
 
 const {log, level, logDirect, assert} = require("./src/Log");
-const {ucFirst}                       = require("./src/Strings");
+const {ucFirst, sprintf, printf}      = require("./src/Strings");
 const {isDevelopment, here}           = require("./src/Environment");
 const {Time}                          = require("./src/Time");
 const {rand}                          = require("./src/Math");
+const {Scheduler}                     = require("./src/Scheduler");
 
 module.exports = {
 	log,
@@ -16,8 +17,11 @@ module.exports = {
 	level,
 	assert,
 	ucFirst,
+	sprintf,
+	printf,
 	isDevelopment,
 	here,
 	Time,
-	rand
+	Scheduler,
+	rand,
 };
