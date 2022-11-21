@@ -1,4 +1,4 @@
-const {Scheduler} = require("./Scheduler");
+"use strict";
 
 const Time = Object.freeze({
 	SECONDS : 1000,
@@ -8,6 +8,5 @@ const Time = Object.freeze({
 });
 
 module.exports = {
-	Time,
-	Scheduler
+	Time
 }
