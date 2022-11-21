@@ -9,6 +9,7 @@ const {ucFirst, sprintf, printf}      = require("./src/Strings");
 const {isDevelopment, here}           = require("./src/Environment");
 const {Time}                          = require("./src/Time");
 const {rand}                          = require("./src/Math");
+const {Enum, iota}                    = require("./src/Enum");
 const {Scheduler}                     = require("./src/Scheduler");
 
 module.exports = {
@@ -24,4 +25,6 @@ module.exports = {
 	Time,
 	Scheduler,
 	rand,
+	Enum,
+	iota
 };
