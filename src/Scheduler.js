@@ -41,7 +41,7 @@ class Scheduler {
 		const seconds    = now.getSeconds();
 		const minutes    = now.getMinutes();
 		const hours      = now.getHours();
-		const dayOfMonth = now.geDate();
+		const dayOfMonth = now.getDate();
 		const month      = now.getMonth();
 		const dayOfWeek  = now.getDay();;
 
