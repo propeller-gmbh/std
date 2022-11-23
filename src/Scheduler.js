@@ -116,7 +116,7 @@ class Scheduler {
 					parts[i] = null;
 					continue;
 				}
-				assert(parts[i].match(/\*\/?[1-9]*/), "unknown time indentifier: '%'", parts[i]);
+				assert(parts[i].match(/\*\/?[1-9]*/) !== null, "unknown time indentifier: '%'", parts[i]);
 				parts[i] = `${parts[i].split('/')[1]}`;
 
 				// '*/1' is equal to '*'
