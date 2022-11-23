@@ -1,6 +1,6 @@
 {
 	"name": "@propeller/std",
-	"version": "1.5.7",
+	"version": "1.6.2",
 	"description": "The propeller standard library for nodejs",
 	"main": "index.js",
 	"scripts": {
