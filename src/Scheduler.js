@@ -28,12 +28,23 @@ class TimeCallback {
 }
 
 class Scheduler {
+	interval;
+	runEvery;
 	callbacks;
 
 	constructor(runEvery = 1 * Time.SECONDS) {
 		this.callbacks = [];
+		this.runEvery  = runEvery;
+		this.interval  = null;
 
-		setInterval(() => this.timeStep(), runEvery);
+		this.clear();
+	}
+
+	clear() {
+		if (this.interval !== null)
+			clearInterval(this.interval);
+		this.callbacks = [];
+		this.interval  = setInterval(() => this.timeStep(), this.runEvery);
 	}
 
 	timeStep() {
