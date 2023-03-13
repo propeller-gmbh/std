@@ -94,6 +94,7 @@ class Scheduler {
 	 * - a number means the literal number - i.e. `5` on the "minutes" place means "on the fifth minute"
 	 * - a `*` means every unit - i.e. `*` on the "hours" place means "every hour"
 	 * * `* /n` means every "nth" unit - i.e. `* /6` on the "seconds" place means "every six seconds"
+	 * ––– (spaces between '*' and '/' in the line above are only to prevent this comment from blowing up) –––
 	 * 
 	 * ``` 
 	 * *    *    *    *    *    *
