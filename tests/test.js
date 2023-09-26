@@ -1,4 +1,4 @@
-const {log, level, assert} = require("../index");
+const {log, level, assert, Time, Scheduler} = require("../index");
 
 
 const LogTest = () => {
@@ -50,6 +50,12 @@ const AssertionTest = () => {
 
 	assert(value === 5, `expected value to be 5, actually is '%'`, value);
 }
+
+const scheduler = new Scheduler(1 * Time.SECONDS, "foo", "bar");
+
+scheduler.register("* * * * * *", async (str1, str2) => {
+	log("string1 : %, string2: %", str1, str2);
+});
 
 LogTest();
 AssertionTest();

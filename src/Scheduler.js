@@ -32,10 +32,16 @@ class Scheduler {
 	runEvery;
 	callbacks;
 
-	constructor(runEvery = 1 * Time.SECONDS) {
-		this.callbacks = [];
-		this.runEvery  = runEvery;
-		this.interval  = null;
+	/**
+	 * 
+	 * @param {int} runEvery Sets the default interval in which the scheduler will run. Default is every second.
+	 * @param  {...any} callbackArguments These arguments well be passed to every callback
+	 */
+	constructor(runEvery = 1 * Time.SECONDS, ...callbackArguments) {
+		this.callbackArguments = callbackArguments;
+		this.callbacks         = [];
+		this.runEvery          = runEvery;
+		this.interval          = null;
 
 		this.clear();
 	}
@@ -54,8 +60,9 @@ class Scheduler {
 		const hours      = now.getHours();
 		const dayOfMonth = now.getDate();
 		const month      = now.getMonth();
-		const dayOfWeek  = now.getDay();;
+		const dayOfWeek  = now.getDay();
 
+		// This works on the logic explained on `Scheduler::ParseTimeString`.
 		for (const callback of this.callbacks) {
 			if (typeof callback.seconds === "string" && seconds % Number(callback.seconds) !== 0)
 				continue;
@@ -82,7 +89,7 @@ class Scheduler {
 			else if (typeof callback.dayOfWeek === "number" && dayOfWeek !== callback.dayOfWeek)
 				continue;
 
-			callback.callback();
+			callback.callback(...this.callbackArguments);
 		}
 	}
 
@@ -116,9 +123,22 @@ class Scheduler {
 		this.callbacks.push(new TimeCallback(...Scheduler.ParseTimeString(timeString), callback));
 	}
 
+	/**
+	 * Here we return a argument list for the constructor of `TimeCallback`
+	 * 
+	 * The actual data type of a member influences future handling inside
+	 * `Scheduler::timeStep()`:
+	 * - if it is of type `Number`, it matches the literal unit (6, "every sixth unit")
+	 * - if it is of type `string`, it matches for every "nth" units (* /6)
+	 * - if it is `null`, it always matches (*)
+	 * 
+	 * @param {string} string The action time format string (crontab-like) 
+	 * @returns {array}  The arguments for the constructor of `TimeCallback`
+	 * @see TimeCallback
+	 */
 	static ParseTimeString = string => {
 		const parts = string.split(/\s/gi);
-		
+
 		assert(parts.length === 6, "time string '%' is malformed", string);
 
 		for (let i = 0; i < parts.length; i++) {
