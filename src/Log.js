@@ -81,10 +81,9 @@ const log = (string, ...args) => {
 const assert = (assertion, string, ...args) => {
 	if (!isDevelopment())
 		return;
-	
 
 	if (assertion !== true) {
-		const paths = here().split('/').reduce((accumulator, current, index, array) => {
+		const paths = here(1).split('/').reduce((accumulator, current, index, array) => {
 			const divider = accumulator === "" ? "" : "/";
 			const color   = index === array.length -1 ? COLOR(_color.yellowBright) : "";
 			return `${accumulator}${divider}${color}${current}`;
