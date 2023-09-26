@@ -6,11 +6,11 @@ const _stack = () => {
 	return stack;
 }
 
-const here = () => {
+const here = (offset = 0) => {
 	const stack = _stack();
 	stack.shift();
 
-	const location = stack.length > 0 ? stack[0] : null;
+	const location = stack.length > (offset === 0 ? 0 : offset - 1) ? stack[offset] : null;
 	const paths    = location.split(' ');
 
 	return paths[paths.length - 1].substring(1, paths[paths.length - 1].length - 2);
