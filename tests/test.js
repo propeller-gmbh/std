@@ -1,4 +1,4 @@
-const {log, level, assert, Time, Scheduler} = require("../index");
+const {log, level, assert, Time, Scheduler, Enum, iota} = require("../index");
 
 
 const LogTest = () => {
@@ -50,13 +50,33 @@ const AssertionTest = () => {
 
 	assert(value === 5, `expected value to be 5, actually is '%'`, value);
 }
-/*
-const scheduler = new Scheduler(1 * Time.SECONDS, "foo", "bar");
+const SchedulerTest = () => {
+	let rounds = 0;
 
-scheduler.register("* * * * * *", async (str1, str2) => {
-	log("string1 : %, string2: %", str1, str2);
-});
-*/
+	const scheduler = new Scheduler(1 * Time.SECONDS, "foo", "bar");
 
-//LogTest();
-AssertionTest();
+	scheduler.register("* * * * * *", async (str1, str2) => {
+		if (rounds > 2) {
+			AssertionTest();
+		}
+		log("string1 : %, string2: %", str1, str2);
+		rounds++;
+	});
+}
+
+const EnumTest = () => {
+	const Colors = Enum({
+		GREEN : iota(),
+		BLUE  : iota(),
+		BLACK : iota()
+	}, "Colors");
+
+	log("%", Colors);
+	Colors.GREEN = 5;
+	const a = Colors.GREEN;
+	log("a is '%'", a);
+};
+
+EnumTest();
+LogTest();
+SchedulerTest();
