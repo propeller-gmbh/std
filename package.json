@@ -8,7 +8,7 @@
 		"semantic-release": "semantic-release"
 	},
 	"publishConfig": {
-		"access": "private"
+		"access": "public"
 	},
 	"repository": {
 		"type": "git",

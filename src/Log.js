@@ -33,9 +33,9 @@ const level = Object.freeze({
 
 /**
  * logs directly without prepeding by the use of `caller`
- * 
- * @param {String} string 
- * @param {String} prefix 
+ *
+ * @param {String} string
+ * @param {String} prefix
  */
 const logDirect = (string, prefix = "") => {
 	if (!string)
@@ -47,7 +47,7 @@ const logDirect = (string, prefix = "") => {
 
 /**
  * Standard log function
- * 
+ *
  * Takes a string or a template literal and logs it to the console while
  * coloring it depending on the log level. Log level is provided as a tag to a
  * template literal.
@@ -57,19 +57,19 @@ const logDirect = (string, prefix = "") => {
  * such: '\\%'.
  * it exits the program when log level fatal is detected and skips logging
  * alltogether when in production mode.
- * 
- * @param {String|LogObject} string 
- * @param {...any} args 
- * 
+ *
+ * @param {String|LogObject} string
+ * @param {...any} args
+ *
  * @author Michael Ochmann <michael.ochmann@propeller.de>
  */
-//@Todo : Bug: handle `undefined` arguments
+ //TODO: Bug: handle `undefined` arguments
 const log = (string, ...args) => {
 	if (!string)
 		return;
 	if (!isDevelopment() && (!(string instanceof LogObject) || !string.fatal))
 		return; // we return when log level is not fatal and we are in production mode
-	
+
 	const output = sprintf(string, ...args);
 	const val    = typeof output === "undefined" ? "undefined" : (output === null ? "null" : output.toString());
 	logDirect(`[${caller(1)}] ${val}`, string instanceof LogObject ? string.prefix : "");
