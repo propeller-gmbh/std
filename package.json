@@ -12,7 +12,7 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "git@gitlab.propeller.de:propeller/inhouse/nodejs/std.git"
+		"url": "git@github.com:propeller-gmbh/std.git"
 	},
 	"author": "Michael Ochmann <michael.ochmann@propeller.de>",
 	"license": "UNLICENSED",
