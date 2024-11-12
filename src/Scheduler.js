@@ -59,7 +59,7 @@ class Scheduler {
 		const minutes    = now.getMinutes();
 		const hours      = now.getHours();
 		const dayOfMonth = now.getDate();
-		const month      = now.getMonth();
+		const month      = now.getMonth() + 1;
 		const dayOfWeek  = now.getDay();
 
 		// This works on the logic explained on `Scheduler::ParseTimeString`.
