@@ -33,15 +33,20 @@ class Scheduler {
 	callbacks;
 
 	/**
-	 * 
-	 * @param {int} runEvery Sets the default interval in which the scheduler will run. Default is every second.
-	 * @param  {...any} callbackArguments These arguments well be passed to every callback
+	 *
+	 * @param {int} runEvery Sets the default interval in which the scheduler
+	 *                       will run. Default is every half of a second.
+	 *                       NOTE: This has to be set in half of a second intervals,
+	 *                             to not loose steps
+	 * @param  {...any} callbackArguments These arguments well be passed to
+	 * every callback
 	 */
-	constructor(runEvery = 1 * Time.SECONDS, ...callbackArguments) {
+	constructor(runEvery = 0.5 * Time.SECONDS, ...callbackArguments) {
 		this.callbackArguments = callbackArguments;
 		this.callbacks         = [];
 		this.runEvery          = runEvery;
 		this.interval          = null;
+		this.lastSeconds       = -1;
 
 		this.clear();
 	}
@@ -49,12 +54,23 @@ class Scheduler {
 	clear() {
 		if (this.interval !== null)
 			clearInterval(this.interval);
-		this.callbacks = [];
-		this.interval  = setInterval(() => this.timeStep(), this.runEvery);
+		this.callbacks   = [];
+		this.lastSeconds = -1;
+		this.interval    = setInterval(() => this.scheduleStep(), this.runEvery);
 	}
 
-	timeStep() {
-		const now        = new Date();
+	scheduleStep() {
+		const now     = new Date();
+		const seconds = now.getSeconds();
+
+		if (seconds === this.lastSeconds)
+			return;
+
+		this.lastSeconds = seconds;
+		this.timeStep(now);
+	}
+
+	timeStep(now) {
 		const seconds    = now.getSeconds();
 		const minutes    = now.getMinutes();
 		const hours      = now.getHours();
